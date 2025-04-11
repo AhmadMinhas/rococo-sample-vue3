@@ -53,9 +53,19 @@ const authStore = useAuthStore()
 const linksList = [
   {
     title: 'Dashboard',
-    icon: 'code',
+    icon: 'home',
     link: '/dashboard',
   },
+  {
+    title: 'Todo List',
+    icon: 'list',
+    link: '/todo-list',
+  },
+  {
+    title: 'Profile',
+    icon: 'manage_accounts',
+    link: '/user-profile',
+  }
 ]
 
 const leftDrawerOpen = ref(false)
