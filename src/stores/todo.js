@@ -34,11 +34,13 @@ export const useTodoStore = defineStore("todo", {
     },
 
     async updateTodo(id, payload) {
-      this.todos.todos.forEach(todo => {
-          if (todo.entity_id === id) {
-            todo.title = payload.title; // Update the title if the id matches
-          }
-      });
+      if (payload.title) {
+            this.todos.todos.forEach(todo => {
+                if (todo.entity_id === id) {
+                  todo.title = payload.title;
+                }
+            });
+      }
       try {
         const res = await axios.patch(`/todo/${id}`, payload);
         return res.data;
