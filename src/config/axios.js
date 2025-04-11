@@ -14,10 +14,25 @@ const apiClient = axios.create({
 apiClient.interceptors.request.use((config) => {
   const authStore = useAuthStore();
   if (authStore.isAuthenticated) {
-    config.headers.Authorization = `Bearer ${authStore.user.token}`;
+    config.headers.Authorization = `Bearer ${authStore.accessToken}`;
   }
   return config;
 });
+
+apiClient.interceptors.response.use(
+  (response) => {
+    // Handle successful responses
+    return response;
+  },
+  (error) => {
+    // Handle errors
+    if (error.response && error.response.status === 401) {
+      const authStore = useAuthStore();
+      authStore.logout(); // Logout if unauthorized
+    }
+    return Promise.reject(error);
+  }
+);
   
 
 export default apiClient;

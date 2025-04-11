@@ -1,7 +1,7 @@
 import { Notify } from 'quasar'; // Import Quasar's Notify
 import localStorageService from '@/services/localStorage.service'; // Import your localStorage service
 
-export async function handleAuthRequest(store, requestFn, router) {
+export async function handleAuthRequest(store, requestFn, router, setToken=true) {
 
   let response;
   try {
@@ -22,16 +22,18 @@ export async function handleAuthRequest(store, requestFn, router) {
     return false;
   }
 
-  const { person, access_token, expiry } = response.data;
-  store.user = person;
-  store.accessToken = access_token;
-  store.accessTokenExpiry = expiry;
+  if (setToken) {
+    const { person, access_token, expiry } = response.data;
+    store.user = person;
+    store.accessToken = access_token;
+    store.accessTokenExpiry = expiry;
 
-  localStorageService.setItem('user', person);
-  localStorageService.setItem('accessToken', access_token);
-  localStorageService.setItem('accessTokenExpiry', access_token);
+    localStorageService.setItem('user', person);
+    localStorageService.setItem('accessToken', access_token);
+    localStorageService.setItem('accessTokenExpiry', expiry);
 
-  router.push('/dashboard');
+    router.push('/dashboard');
+  }
 
   return true; // Indicate success
 }
